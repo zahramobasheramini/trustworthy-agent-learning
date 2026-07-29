@@ -26,6 +26,9 @@ for word in question_words:
         found_words.append(word)
 
 if found_words:
+    score = len(found_words)
+
     print("Found words:", found_words)
+    print("Score:", score)
 else:
     print("No words were found.")
