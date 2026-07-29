@@ -9,7 +9,7 @@ def clean_text(text):
 
 
 question = input("Enter your question: ")
-question_words = clean_text(question).split()
+question_words = set(clean_text(question).split())
 
 
 if not question_words:
