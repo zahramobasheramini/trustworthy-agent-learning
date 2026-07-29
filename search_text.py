@@ -20,7 +20,7 @@ best_chunk = ""
 best_score = 0
 
 
-for chunk in chunks:
+for chunk_number, chunk in enumerate(chunks, start=1):
     chunk_words = clean_text(chunk).split()
 
     score = 0
@@ -29,14 +29,16 @@ for chunk in chunks:
         if word in chunk_words:
             score += 1
 
+    print("Chunk", chunk_number, "score:", score)
+
     if score > best_score:
         best_score = score
         best_chunk = chunk.strip()
 
 
 if best_score > 0:
-    print("Most relevant text:")
+    print("\nMost relevant text:")
     print(best_chunk)
-    print("Score:", best_score)
+    print("Best score:", best_score)
 else:
-    print("No relevant text was found.")
+    print("\nNo relevant text was found.")
