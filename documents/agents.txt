@@ -1,0 +1,3 @@
+AI agents can use tools to complete tasks. They can interact with software, retrieve information, and make decisions.
+
+Trustworthy AI agents should provide reliable answers and avoid unsupported claims.

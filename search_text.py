@@ -1,4 +1,5 @@
 import string
+from pathlib import Path
 
 
 def clean_text(text):
@@ -6,12 +7,6 @@ def clean_text(text):
         str.maketrans("", "", string.punctuation)
     )
 
-
-with open("documents/sample.txt", "r", encoding="utf-8") as file:
-    text = file.read()
-
-
-chunks = text.split("\n\n")
 
 question = input("Enter your question: ")
 question_words = clean_text(question).split()
@@ -23,31 +18,44 @@ if not question_words:
 
 
 best_chunk = ""
+best_file = ""
 best_score = 0
 minimum_score = 2
 
 
-for chunk_number, chunk in enumerate(chunks, start=1):
-    chunk_words = clean_text(chunk).split()
+for file_path in Path("documents").glob("*.txt"):
+    text = file_path.read_text(encoding="utf-8")
+    chunks = text.split("\n\n")
 
-    score = 0
+    for chunk_number, chunk in enumerate(chunks, start=1):
+        chunk_words = clean_text(chunk).split()
 
-    for word in question_words:
-        if word in chunk_words:
-            score += 1
+        score = 0
 
-    print("Chunk", chunk_number, "score:", score)
+        for word in question_words:
+            if word in chunk_words:
+                score += 1
 
-    if score > best_score:
-        best_score = score
-        best_chunk = chunk.strip()
+        print(
+            file_path.name,
+            "- Chunk",
+            chunk_number,
+            "- Score:",
+            score
+        )
+
+        if score > best_score:
+            best_score = score
+            best_chunk = chunk.strip()
+            best_file = file_path.name
 
 
 match_ratio = best_score / len(question_words)
 
 
 if best_score >= minimum_score and match_ratio >= 0.5:
-    print("\nMost relevant text:")
+    print("\nSource:", best_file)
+    print("Most relevant text:")
     print(best_chunk)
     print("Best score:", best_score)
     print("Match ratio:", round(match_ratio, 2))
