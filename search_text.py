@@ -8,34 +8,35 @@ def clean_text(text):
 
 
 with open("sample.txt", "r", encoding="utf-8") as file:
-    lines = file.readlines()
+    text = file.read()
 
+
+chunks = text.split("\n\n")
 
 question = input("Enter your question: ")
-
 question_words = clean_text(question).split()
 
-best_line = ""
+best_chunk = ""
 best_score = 0
 
 
-for line in lines:
-    line_words = clean_text(line).split()
+for chunk in chunks:
+    chunk_words = clean_text(chunk).split()
 
     score = 0
 
     for word in question_words:
-        if word in line_words:
+        if word in chunk_words:
             score += 1
 
     if score > best_score:
         best_score = score
-        best_line = line.strip()
+        best_chunk = chunk.strip()
 
 
 if best_score > 0:
     print("Most relevant text:")
-    print(best_line)
+    print(best_chunk)
     print("Score:", best_score)
 else:
     print("No relevant text was found.")

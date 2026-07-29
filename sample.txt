@@ -1,3 +1,5 @@
-RAG systems combine document retrieval with language model generation.
-AI agents can use tools to complete different tasks.
-Evaluation measures the quality and reliability of generated answers.
+RAG systems combine document retrieval with language model generation. They provide external information to improve generated answers.
+
+AI agents can use tools to complete different tasks. They may interact with applications and external systems.
+
+Evaluation measures the quality and reliability of generated answers. It helps researchers compare different methods.
