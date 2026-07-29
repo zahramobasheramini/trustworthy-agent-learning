@@ -14,12 +14,12 @@ with open("sample.txt", "r", encoding="utf-8") as file:
 question = input("Enter your question: ")
 
 words = question.lower().split()
-text = text.lower()
+text_words = text.lower().split()
 
 found_words = []
 
-for word in words:
-    if word in text:
+for word in question_words:
+    if word in text_words:
         found_words.append(word)
 
 if found_words:
