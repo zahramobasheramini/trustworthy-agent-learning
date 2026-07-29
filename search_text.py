@@ -17,14 +17,11 @@ if not question_words:
     exit()
 
 
-best_chunk = ""
-best_file = ""
-best_chunk_number = 0
-best_score = 0
-best_matched_words = []
-
 minimum_score = 2
 minimum_match_ratio = 0.5
+top_k = 2
+
+results = []
 
 
 for file_path in Path("documents").glob("*.txt"):
@@ -33,7 +30,6 @@ for file_path in Path("documents").glob("*.txt"):
 
     for chunk_number, chunk in enumerate(chunks, start=1):
         chunk_words = clean_text(chunk).split()
-
         matched_words = []
 
         for word in question_words:
@@ -41,36 +37,41 @@ for file_path in Path("documents").glob("*.txt"):
                 matched_words.append(word)
 
         score = len(matched_words)
+        match_ratio = score / len(question_words)
 
+        if (
+            score >= minimum_score
+            and match_ratio >= minimum_match_ratio
+        ):
+            results.append(
+                (
+                    score,
+                    file_path.name,
+                    chunk_number,
+                    matched_words,
+                    chunk.strip()
+                )
+            )
+
+
+results.sort(reverse=True)
+
+
+if results:
+    print("\nTop relevant results:")
+
+    for result in results[:top_k]:
+        score, file_name, chunk_number, matched_words, chunk = result
+
+        print("\nSource:", file_name)
+        print("Chunk number:", chunk_number)
+        print("Matched words:", sorted(matched_words))
+        print("Text:")
+        print(chunk)
+        print("Score:", score)
         print(
-            file_path.name,
-            "- Chunk",
-            chunk_number,
-            "- Score:",
-            score
+            "Match ratio:",
+            round(score / len(question_words), 2)
         )
-
-        if score > best_score:
-            best_score = score
-            best_chunk = chunk.strip()
-            best_file = file_path.name
-            best_chunk_number = chunk_number
-            best_matched_words = matched_words.copy()
-
-
-match_ratio = best_score / len(question_words)
-
-
-if (
-    best_score >= minimum_score
-    and match_ratio >= minimum_match_ratio
-):
-    print("\nSource:", best_file)
-    print("Chunk number:", best_chunk_number)
-    print("Matched words:", sorted(best_matched_words))
-    print("Most relevant text:")
-    print(best_chunk)
-    print("Best score:", best_score)
-    print("Match ratio:", round(match_ratio, 2))
 else:
     print("\nNo relevant text was found.")
