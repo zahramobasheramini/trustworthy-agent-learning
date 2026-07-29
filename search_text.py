@@ -21,6 +21,7 @@ best_chunk = ""
 best_file = ""
 best_chunk_number = 0
 best_score = 0
+best_matched_words = []
 
 minimum_score = 2
 minimum_match_ratio = 0.5
@@ -33,11 +34,13 @@ for file_path in Path("documents").glob("*.txt"):
     for chunk_number, chunk in enumerate(chunks, start=1):
         chunk_words = clean_text(chunk).split()
 
-        score = 0
+        matched_words = []
 
         for word in question_words:
             if word in chunk_words:
-                score += 1
+                matched_words.append(word)
+
+        score = len(matched_words)
 
         print(
             file_path.name,
@@ -52,6 +55,7 @@ for file_path in Path("documents").glob("*.txt"):
             best_chunk = chunk.strip()
             best_file = file_path.name
             best_chunk_number = chunk_number
+            best_matched_words = matched_words.copy()
 
 
 match_ratio = best_score / len(question_words)
@@ -63,6 +67,7 @@ if (
 ):
     print("\nSource:", best_file)
     print("Chunk number:", best_chunk_number)
+    print("Matched words:", sorted(best_matched_words))
     print("Most relevant text:")
     print(best_chunk)
     print("Best score:", best_score)
