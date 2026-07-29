@@ -13,7 +13,7 @@ with open("sample.txt", "r", encoding="utf-8") as file:
 
 question = input("Enter your question: ")
 
-words = question.lower().split()
+question_words = question.lower().split()
 text_words = text.lower().split()
 
 found_words = []
