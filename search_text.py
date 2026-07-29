@@ -1,20 +1,23 @@
-# with open("sample.txt", "r", encoding="utf-8") as file:
-#     text = file.read()
+import string
 
-# keyword = input("Enter a keyword: ")
 
-# if keyword.lower() in text.lower():
-#     print("The keyword was found.")
-# else:
-#     print("The keyword was not found.")
+def clean_text(text):
+    cleaned_text = text.lower().translate(
+        str.maketrans("", "", string.punctuation)
+    )
+    return cleaned_text
+
 
 with open("sample.txt", "r", encoding="utf-8") as file:
     text = file.read()
 
 question = input("Enter your question: ")
 
-question_words = question.lower().split()
-text_words = text.lower().split()
+clean_question = clean_text(question)
+clean_document = clean_text(text)
+
+question_words = clean_question.split()
+text_words = clean_document.split()
 
 found_words = []
 
