@@ -2,33 +2,40 @@ import string
 
 
 def clean_text(text):
-    cleaned_text = text.lower().translate(
+    return text.lower().translate(
         str.maketrans("", "", string.punctuation)
     )
-    return cleaned_text
 
 
 with open("sample.txt", "r", encoding="utf-8") as file:
-    text = file.read()
+    lines = file.readlines()
+
 
 question = input("Enter your question: ")
 
-clean_question = clean_text(question)
-clean_document = clean_text(text)
+question_words = clean_text(question).split()
 
-question_words = clean_question.split()
-text_words = clean_document.split()
+best_line = ""
+best_score = 0
 
-found_words = []
 
-for word in question_words:
-    if word in text_words:
-        found_words.append(word)
+for line in lines:
+    line_words = clean_text(line).split()
 
-if found_words:
-    score = len(found_words)
+    score = 0
 
-    print("Found words:", found_words)
-    print("Score:", score)
+    for word in question_words:
+        if word in line_words:
+            score += 1
+
+    if score > best_score:
+        best_score = score
+        best_line = line.strip()
+
+
+if best_score > 0:
+    print("Most relevant text:")
+    print(best_line)
+    print("Score:", best_score)
 else:
-    print("No words were found.")
+    print("No relevant text was found.")

@@ -1,1 +1,3 @@
-Retrieval-Augmented Generation combines document retrieval with language model generation.
+RAG systems combine document retrieval with language model generation.
+AI agents can use tools to complete different tasks.
+Evaluation measures the quality and reliability of generated answers.
