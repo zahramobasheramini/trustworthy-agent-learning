@@ -16,9 +16,16 @@ chunks = text.split("\n\n")
 question = input("Enter your question: ")
 question_words = clean_text(question).split()
 
+
+if not question_words:
+    print("Please enter a question.")
+    exit()
+
+
 best_chunk = ""
 best_score = 0
 minimum_score = 2
+
 
 for chunk_number, chunk in enumerate(chunks, start=1):
     chunk_words = clean_text(chunk).split()
@@ -36,9 +43,13 @@ for chunk_number, chunk in enumerate(chunks, start=1):
         best_chunk = chunk.strip()
 
 
-if best_score >= minimum_score:
+match_ratio = best_score / len(question_words)
+
+
+if best_score >= minimum_score and match_ratio >= 0.5:
     print("\nMost relevant text:")
     print(best_chunk)
     print("Best score:", best_score)
+    print("Match ratio:", round(match_ratio, 2))
 else:
     print("\nNo relevant text was found.")
