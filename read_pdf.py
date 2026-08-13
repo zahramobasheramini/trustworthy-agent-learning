@@ -1,26 +1,16 @@
-from pathlib import Path
-
 from pypdf import PdfReader
 
 
-pdf_path = Path("documents/test.pdf")
+reader = PdfReader("documents/test.pdf")
 
-if not pdf_path.exists():
-    print("PDF file was not found.")
-    exit()
+text = ""
 
-
-reader = PdfReader(pdf_path)
-
-print("Number of pages:", len(reader.pages))
+for page in reader.pages:
+    text += page.extract_text() + "\n"
 
 
-for page_number, page in enumerate(reader.pages, start=1):
-    text = page.extract_text()
+with open("documents/extracted_pdf.txt", "w", encoding="utf-8") as file:
+    file.write(text)
 
-    print(f"\n--- Page {page_number} ---")
 
-    if text:
-        print(text)
-    else:
-        print("No text was extracted from this page.")
+print("PDF text saved.")
